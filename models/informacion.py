@@ -43,3 +43,5 @@ class informacion(models.Model):
                else:
                     rexistro.densidade = 0
 
+     def _cambia_campo_sexo(self, rexistro):
+          rexistro.sexo_traducido = "Hombre"

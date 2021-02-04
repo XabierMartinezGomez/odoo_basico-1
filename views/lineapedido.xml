@@ -16,6 +16,7 @@
                 <form string="Formulario lineapedido">
                     <sheet>
                         <field name="descripcion_da_lineapedido"/>
+                        <field name="informacion_ids"/>
                     </sheet>
                 </form>
             </field>

@@ -15,7 +15,7 @@
             <field name="arch" type="xml">
                 <form string="Formulario pedido">
                     <header>
-
+                        <button name="actualizadorSexo" type="object" string="Actualiza o campo Sexo do modelo información"/>
                     </header>
                     <sheet>
                         <group>
@@ -25,8 +25,8 @@
                         <separator string="Visualizar e engadir"/>
                         <field name="lineapedido_ids"/>
                         <!-- Non permite editar -->
-<!--                          <separator string="Só visualizar"/>-->
-<!--                          <field name="lineapedido_ids" readonly="1"/>-->
+                        <!--                          <separator string="Só visualizar"/>-->
+                        <!--                          <field name="lineapedido_ids" readonly="1"/>-->
                     </sheet>
                 </form>
             </field>
