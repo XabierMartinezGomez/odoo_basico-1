@@ -28,6 +28,7 @@
           <field name="mes_galego"/>
           <field name="hora_utc"/>
           <field name="hora_actual"/>
+          <field name="hora_timezone_usuario"/>
         </tree>
       </field>
     </record>
@@ -94,6 +95,7 @@
                   <field name="mes_galego"/>
                   <field name="hora_utc"/>
                   <field name="hora_actual"/>
+                  <field name="hora_timezone_usuario"/>
                 </group>
               </page>
             </notebook>

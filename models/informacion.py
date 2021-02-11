@@ -37,8 +37,7 @@ class informacion(models.Model):
      mes_castelan = fields.Char(compute="_mes_castelan", size=15, string="Mes en castelán", store=True)
      mes_galego = fields.Char(compute="_mes_galego", size=15,string="Mes en galego", store=True)
      hora_utc = fields.Char(compute="_hora_utc", string="Hora UTC", size=15, store=True)
-     # hora_timezone_usuario = fields.Char(compute="_hora_timezone_usuario", string="Hora Timezone do Usuario", size=15,
-     #                                     store=True)
+     hora_timezone_usuario = fields.Char(compute="_hora_timezone_usuario", string="Hora Timezone do Usuario", size=15,store=True)
      hora_actual = fields.Char(compute="_hora_actual", string="Hora Actual", size=15, store=True)
 
      @api.depends('alto_en_cms','longo_en_cms','ancho_en_cms')
