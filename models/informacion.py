@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 from odoo.exceptions import Warning
 import locale
 import pytz
@@ -8,6 +9,8 @@ import pytz
 class informacion(models.Model):
      _name = 'odoo_basico.informacion' # Será o nome da táboa
      _description = ' Tipos de datos básicos'
+     _order = "descripcion desc"
+     _sql_constraints = [('nome unico', 'unique(name)', 'Non se pode repetir o nome')]
 
      name = fields.Char(string="Titulo",required=True,size=20)
      descripcion = fields.Text(string="A Descripción")
@@ -39,6 +42,18 @@ class informacion(models.Model):
      hora_utc = fields.Char(compute="_hora_utc", string="Hora UTC", size=15, store=True)
      hora_timezone_usuario = fields.Char(compute="_hora_timezone_usuario", string="Hora Timezone do Usuario", size=15,store=True)
      hora_actual = fields.Char(compute="_hora_actual", string="Hora Actual", size=15, store=True)
+
+     @api.onchange('alto_en_cms')
+     def _avisoAlto(self):
+         for rexistro in self:  # Ao usar warning temos que importar a libreria from odoo.exceptions import Warning
+             if rexistro.alto_en_cms > 7:
+                 raise Warning('O alto ten un valor posiblemente excesivo %s é maior que 7' % rexistro.alto_en_cms)
+
+     @api.constrains('peso')  # Ao usar ValidationError temos que importar a libreria ValidationError
+     def _constrain_peso(self):  # from odoo.exceptions import ValidationError
+         for rexistro in self:
+             if rexistro.peso < 1 or rexistro.peso > 4:
+                 raise ValidationError('Os peso de %s ten que ser entre 1 e 4 ' % rexistro.name)
 
      @api.depends('alto_en_cms','longo_en_cms','ancho_en_cms')
      def _volume(self):
@@ -118,4 +133,21 @@ class informacion(models.Model):
      def _hora_timezone_usuario(self):
          for rexistro in self:
              rexistro.actualiza_hora_timezone_usuario_dende_boton_e_apidepends()
+
+     def envio_email(self):
+         meu_usuario = self.env.user
+         # mail_de     Odoo pon o email que configuramos en gmail para facer o envio
+         mail_reply_to = meu_usuario.partner_id.email  # o enderezo email que ten asociado o noso usuario
+         mail_para = 'santiago191098@gmail.com'  # o enderezo email de destino
+         mail_valores = {
+             'subject': 'Aquí iría o asunto do email ',
+             'author_id': meu_usuario.id,
+             'email_from': mail_reply_to,
+             'email_to': mail_para,
+             'message_type': 'email',
+             'body_html': 'Aquí iría o corpo do email cos datos por exemplo de "%s" ' % self.descripcion,
+         }
+         mail_id = self.env['mail.mail'].create(mail_valores)
+         mail_id.sudo().send()
+         return True
 
