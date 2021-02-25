@@ -20,10 +20,11 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base','mail','account'],
 
     # always loaded
     'data': [
+        'acccions_planificadas/accion_planificada.xml',
         'views/persoa.xml',
         'reports/report_header.xml',
         'reports/report_informacion.xml',

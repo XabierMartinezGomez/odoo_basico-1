@@ -56,7 +56,6 @@
             <group>
               <field name="name"/>
               <field name="foto" widget="image" class="oe_avatar"/>
-              <field name="foto" widget="image"/>
               <field name="adxunto_nome" invisible="1"/>
               <field name="adxunto" filename="adxunto_nome"/>
             </group>
@@ -70,6 +69,7 @@
               </page>
               <page string="Datos Numéricos">
                 <group>
+                  <field name="literal" readonly="1"/>
                   <field name="alto_en_cms"/>
                   <field name="longo_en_cms"/>
                   <field name="ancho_en_cms"/>
@@ -90,16 +90,23 @@
               </page>
               <page string="Datas">
                 <group>
-                  <field name="data"/>
-                  <field name="data_hora"/>
-                  <field name="mes_castelan"/>
-                  <field name="mes_galego"/>
-                  <field name="hora_utc"/>
-                  <field name="hora_actual"/>
-                  <field name="hora_timezone_usuario"/>
+                  <group>
+                    <field name="data"/>
+                    <field name="mes_castelan"/>
+                    <field name="mes_galego"/>
+                  </group>
+                  <group>
+                    <field name="data_hora"/>
+                    <field name="hora_utc"/>
+                    <field name="hora_actual"/>
+                    <field name="hora_timezone_usuario"/>
+                  </group>
                 </group>
               </page>
             </notebook>
+            <group>
+              <field name="foto" widget="image"/>
+            </group>
           </sheet>
         </form>
       </field>

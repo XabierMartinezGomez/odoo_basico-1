@@ -16,6 +16,7 @@ class informacion(models.Model):
      descripcion = fields.Text(string="A Descripción")
      autorizado = fields.Boolean(string="¿Está Autorizado?",default=True)
      sexo_traducido = fields.Selection([('Hombre','Home'),('Mujer','Muller'),('Otros','Outros')],string="Sexo")
+     literal = fields.Char(store=False)
      alto_en_cms = fields.Integer(string="Alto en Cms.")
      longo_en_cms = fields.Integer(string="Longo en Cms.")
      ancho_en_cms = fields.Integer(string="Ancho en Cms.")
@@ -45,9 +46,11 @@ class informacion(models.Model):
 
      @api.onchange('alto_en_cms')
      def _avisoAlto(self):
-         for rexistro in self:  # Ao usar warning temos que importar a libreria from odoo.exceptions import Warning
+         for rexistro in self:
              if rexistro.alto_en_cms > 7:
-                 raise Warning('O alto ten un valor posiblemente excesivo %s é maior que 7' % rexistro.alto_en_cms)
+                 rexistro.literal = 'O alto ten un valor posiblemente excesivo %s é maior que 7' % rexistro.alto_en_cms
+             else:
+                 rexistro.literal = ""
 
      @api.constrains('peso')  # Ao usar ValidationError temos que importar a libreria ValidationError
      def _constrain_peso(self):  # from odoo.exceptions import ValidationError
@@ -76,7 +79,7 @@ class informacion(models.Model):
              raise Warning('Contexto: %s' % rexistro.env.context)  # env.context é un diccionario  https://www.w3schools.com/python/python_dictionaries.asp
          return True
 
-     @api.depends('data_hora')
+     @api.depends('data')
      def _mes_castelan(self):
          # O idioma por defecto é o configurado en locale na máquina onde se executa odoo.
          # Podemos cambialo con locale.setlocale, os idiomas teñen que estar instalados na máquina onde se executa odoo.
@@ -84,9 +87,9 @@ class informacion(models.Model):
          locale.setlocale(locale.LC_TIME, 'es_ES.utf8')  # Para GNU/Linux
          # locale.setlocale(locale.LC_TIME, 'Spanish_Spain.1252')  # Para Windows
          for rexistro in self:
-             rexistro.mes_castelan = rexistro.data_hora.strftime("%B")  # strftime https://strftime.org/
+             rexistro.mes_castelan = rexistro.data.strftime("%B")  # strftime https://strftime.org/
 
-     @api.depends('data_hora')
+     @api.depends('data')
      def _mes_galego(self):
          # O idioma por defecto é o configurado en locale na máquina onde se executa odoo.
          # Podemos cambialo con locale.setlocale, os idiomas teñen que estar instalados na máquina onde se executa odoo.
@@ -94,7 +97,7 @@ class informacion(models.Model):
          locale.setlocale(locale.LC_TIME, 'gl_ES.utf8')  # Para GNU/Linux
          # locale.setlocale(locale.LC_TIME, 'Galician_Spain.1252')  # Para Windows
          for rexistro in self:
-             rexistro.mes_galego = rexistro.data_hora.strftime("%B")
+             rexistro.mes_galego = rexistro.data.strftime("%B")
          locale.setlocale(locale.LC_TIME, 'es_ES.utf8')  # Para GNU/Linux
          # locale.setlocale(locale.LC_TIME, 'Spanish_Spain.1252')  # Para Windows
 
